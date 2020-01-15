@@ -1,0 +1,94 @@
+﻿@model PaginatedList<Availabilities2.Models.Availability>
+
+
+@{
+    ViewBag.Title = "Availabilities";
+}
+
+<h2>Availabilities</h2>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-action no-color">
+        <p>
+            Find by symbol: <input type="text" name="SymbolSearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" />
+            <br />
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SymbolSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Symbol</a>
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Borrow Rate
+            </th>
+            <th>
+                Businness Date
+            </th>
+            <th>
+                Broker Code
+            </th>
+            <th>
+                Broker Source
+            </th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Symbol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BusinnessDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrokerCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrokerSource)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
